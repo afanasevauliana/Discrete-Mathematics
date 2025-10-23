@@ -3,13 +3,13 @@ import random
 import numpy as np
 import matplotlib.pyplot as plt
 
-def generate_permutations(elements: list):
+def task1(elements: list):
     return list(itertools.permutations(elements))
 
-def generate_combinations(elements: list, k: int):
+def task2(elements: list, k: int):
     return list(itertools.combinations(elements, k))
 
-def generate_permutations_optimized(elements: list):
+def task3(elements: list):
     def backtrack(path, used, result):
         if len(path) == len(elements):
             result.append(tuple(path))
@@ -25,15 +25,15 @@ def generate_permutations_optimized(elements: list):
     backtrack([], [False] * len(elements), result)
     return result
 
-def generate_combinations_with_constraints(elements: list, k: int, max_sum: float = None):
-    all_combinations = generate_combinations(elements, k)
+def task4(elements: list, k: int, max_sum: float = None):
+    all_combinations = task2(elements, k)
     if max_sum is not None:
         filtered = [comb for comb in all_combinations if sum(comb) <= max_sum]
         return filtered
     
     return all_combinations
 
-def dirichlet_principle_experiment(n: int, k: int, m: int = 1000):
+def task5(n: int, k: int, m: int = 1000):
     successful_cases = 0
     all_distributions = []
     
@@ -59,26 +59,26 @@ def dirichlet_principle_experiment(n: int, k: int, m: int = 1000):
 test_elements = [1, 2, 3]
 
 print("Практическое задание 1:")
-perms = generate_permutations(test_elements)
+perms = task1(test_elements)
 print(f"Перестановки {test_elements}: {perms}")
 
 print("\nПрактическое задание 2:")
-combs = generate_combinations(test_elements, 2)
+combs = task2(test_elements, 2)
 print(f"Сочетания из {test_elements} по 2: {combs}")
 
 print("\nПрактическое задание 3:")
-opt_perms = generate_permutations_optimized(test_elements)
+opt_perms = task3(test_elements)
 print(f"Оптимизированные перестановки: {opt_perms}")
 
 print("\nПрактическое задание 4:")
 test_elements_constrained = [1, 2, 3, 4, 5]
-constrained_combs = generate_combinations_with_constraints(test_elements_constrained, 3, max_sum=8)
+constrained_combs = task4(test_elements_constrained, 3, max_sum=8)
 print(f"Элементы: {test_elements_constrained}")
 print(f"Сочетания из 3 элементов с суммой ≤ 8: {constrained_combs}")
 print(f"Количество: {len(constrained_combs)}")
 
 print("\nПрактическое задание 5:")
-prob, distributions = dirichlet_principle_experiment(10, 3, 1000)
+prob, distributions = task5(10, 3, 1000)
 
 plt.figure(figsize=(12, 5))
 plt.subplot(1, 2, 1)
@@ -95,7 +95,7 @@ n_values = range(3, 30, 3)
 probabilities = []
 
 for n_val in n_values:
-    prob, _ = dirichlet_principle_experiment(n_val, 3, 200)
+    prob, _ = task5(n_val, 3, 200)
     probabilities.append(prob)
 
 plt.plot(n_values, probabilities, 'bo-', linewidth=2, markersize=4)
@@ -116,7 +116,7 @@ print(f"Количество слов: {len(words_length2)}")
 
 print("\nЗадача 2:")
 letters = ['A', 'B', 'C']
-comb_2_letters = generate_combinations(letters, 2)
+comb_2_letters = task2(letters, 2)
 print(f"Буквы: {letters}")
 print(f"Комбинации из 2 букв: {comb_2_letters}")
 print(f"Количество комбинаций: {len(comb_2_letters)}")
@@ -131,7 +131,7 @@ distance_matrix = [
 ]
 
 routes = []
-for perm in generate_permutations_optimized(landmarks[1:]):
+for perm in task3(landmarks[1:]):
     route = ['A'] + list(perm) + ['A']
     routes.append(route)
 
@@ -144,10 +144,10 @@ for route in routes:
         total_distance += distance_matrix[from_idx][to_idx]
     route_distances.append((route, total_distance))
 
-shortest_route = min(route_distances, key=lambda x: x[1])
+min_route = min(route_distances, key=lambda x: x[1])
 print(f"Достопримечательности: {landmarks}")
 print(f"Всего маршрутов: {len(routes)}")
-print(f"Самый короткий маршрут: {shortest_route[0]} - {shortest_route[1]} км")
+print(f"Самый короткий маршрут: {min_route[0]} - {min_route[1]} км")
 
 print("\nЗадача 4:")
 employees = ['A', 'B', 'C', 'D', 'E']
@@ -155,7 +155,7 @@ employees = ['A', 'B', 'C', 'D', 'E']
 def valid_committee(committee):
     return not ('A' in committee and 'B' in committee)
 
-all_committees = generate_combinations(employees, 3)
+all_committees = task2(employees, 3)
 valid_committees = [comm for comm in all_committees if valid_committee(comm)]
 
 print(f"Сотрудники: {employees}")
